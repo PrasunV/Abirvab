@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background-color: theme('colors.marigold.DEFAULT');
+    color: theme('colors.ink');
+  }
+  :focus-visible {
+    outline: 2px solid theme('colors.marigold.DEFAULT');
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center gap-2 rounded-full bg-marigold px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-marigold-dark;
+  }
+  .btn-outline {
+    @apply inline-flex min-h-11 items-center gap-2 rounded-full border border-marigold/60 px-6 py-3 text-sm font-semibold text-marigold transition-colors hover:border-marigold hover:bg-marigold/10;
+  }
+  .btn-outline-white {
+    @apply inline-flex min-h-11 items-center gap-2 rounded-full border border-paper/70 px-6 py-3 text-sm font-semibold text-paper transition-colors hover:border-paper hover:bg-paper/10;
+  }
+  .btn-fill-white {
+    @apply inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-white/85;
+  }
+  .stripe-placeholder {
+    background-color: #E7E4DA;
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(20, 20, 20, 0.06) 0px,
+      rgba(20, 20, 20, 0.06) 1px,
+      transparent 1px,
+      transparent 12px
+    );
+  }
+}
+
+/* Scroll-snap carousel: hide scrollbar while keeping it scrollable/accessible */
+.snap-row {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
