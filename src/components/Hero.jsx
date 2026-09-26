@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import DonationCTA from './DonationCTA.jsx'
 
 export default function Hero() {
   const scope = useRef(null)
@@ -55,14 +56,7 @@ export default function Hero() {
         </p>
 
         <div className="hero-cta mt-10">
-          <a
-            href="https://forms.google.com/YOUR_DONATE_FORM_ID"
-            target="_blank"
-            rel="noreferrer"
-            className="btn-primary"
-          >
-            Donate Now
-          </a>
+          <DonationCTA className="btn-primary">Donate Now</DonationCTA>
         </div>
       </div>
 

@@ -35,6 +35,10 @@
   .btn-outline {
     @apply inline-flex min-h-11 items-center gap-2 rounded-full border border-marigold/60 px-6 py-3 text-sm font-semibold text-marigold transition-colors hover:border-marigold hover:bg-marigold/10;
   }
+  /* Outline button for light surfaces (e.g. the white story modal) */
+  .btn-outline-ink {
+    @apply inline-flex min-h-11 items-center gap-2 rounded-full border border-ink/20 px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink/50 hover:bg-ink/5;
+  }
   .btn-outline-white {
     @apply inline-flex min-h-11 items-center gap-2 rounded-full border border-paper/70 px-6 py-3 text-sm font-semibold text-paper transition-colors hover:border-paper hover:bg-paper/10;
   }

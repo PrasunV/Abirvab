@@ -1,7 +1,7 @@
 const social = [
   { label: 'Facebook', href: 'https://facebook.com/YOUR_PAGE' },
   { label: 'Instagram', href: 'https://instagram.com/YOUR_HANDLE' },
-  { label: 'WhatsApp Community', href: 'https://chat.whatsapp.com/YOUR_INVITE' },
+  { label: 'WhatsApp Community', href: 'https://chat.whatsapp.com/JrlKCjcYSjMHzRIq95aHBK' },
 ]
 
 const utility = [

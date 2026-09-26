@@ -1,32 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { stories } from '../data/stories.js'
+import useDragScroll from '../hooks/useDragScroll.js'
+import Modal from './ui/Modal.jsx'
+import StoryCard from './stories/StoryCard.jsx'
+import StoryModalContent, { STORY_MODAL_TITLE_ID } from './stories/StoryModalContent.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const stories = [
-  {
-    image: '/assets/images/story-1.jpg',
-    title: "Aarav's Path to School",
-  },
-  {
-    image: '/assets/images/story-2.jpg',
-    title: 'Books in Rural Classrooms',
-  },
-  {
-    image: '/assets/images/story-3.jpg',
-    title: 'Bridging the Tech Divide',
-  },
-  {
-    image: '/assets/images/story-4.jpg',
-    title: 'Mentorship That Matters',
-  },
-]
-
 export default function StoriesCarousel() {
   const scope = useRef(null)
-  const rowRef = useRef(null)
+  const rowRef = useDragScroll()
+  const cardRefs = useRef(new Map())
 
+  const [activeId, setActiveId] = useState(null)
+  const [swapped, setSwapped] = useState(false)
+  const activeStory = stories.find((s) => s.id === activeId) ?? null
+
+  // Scroll-in reveal for the cards (unchanged behaviour).
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion) return
@@ -37,51 +29,43 @@ export default function StoriesCarousel() {
         duration: 0.7,
         stagger: 0.1,
         ease: 'power2.out',
-        scrollTrigger: {
-          trigger: scope.current,
-          start: 'top 75%',
-        },
+        scrollTrigger: { trigger: scope.current, start: 'top 75%' },
       })
     }, scope)
     return () => ctx.revert()
   }, [])
 
-  // Desktop mouse-drag scrolling for the rail (touch already scrolls natively)
-  useEffect(() => {
-    const row = rowRef.current
-    if (!row) return
-    let isDown = false
-    let startX = 0
-    let startScroll = 0
+  const setCardRef = useCallback(
+    (id) => (el) => {
+      if (el) cardRefs.current.set(id, el)
+      else cardRefs.current.delete(id)
+    },
+    [],
+  )
 
-    const onDown = (e) => {
-      isDown = true
-      row.classList.add('cursor-grabbing')
-      startX = e.pageX
-      startScroll = row.scrollLeft
-    }
-    const onUp = () => {
-      isDown = false
-      row.classList.remove('cursor-grabbing')
-    }
-    const onMove = (e) => {
-      if (!isDown) return
-      e.preventDefault()
-      row.scrollLeft = startScroll - (e.pageX - startX)
-    }
-
-    row.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointerup', onUp)
-    row.addEventListener('pointermove', onMove)
-    return () => {
-      row.removeEventListener('pointerdown', onDown)
-      window.removeEventListener('pointerup', onUp)
-      row.removeEventListener('pointermove', onMove)
-    }
+  const openStory = useCallback((id) => {
+    setSwapped(false)
+    setActiveId(id)
   }, [])
 
+  // Swap stories from inside the modal. Bring that card into view in the rail
+  // (behind the modal) so closing zooms back into the right card.
+  const selectStory = useCallback(
+    (id) => {
+      const card = cardRefs.current.get(id)
+      const rail = rowRef.current
+      if (card && rail) rail.scrollLeft = card.offsetLeft - rail.offsetLeft
+      setSwapped(true)
+      setActiveId(id)
+    },
+    [rowRef],
+  )
+
+  const closeStory = useCallback(() => setActiveId(null), [])
+  const getOriginElement = useCallback(() => cardRefs.current.get(activeId) ?? null, [activeId])
+
   return (
-    <section ref={scope} className="bg-paper px-6 py-24 md:px-10 md:py-32">
+    <section ref={scope} id="stories" className="bg-paper px-6 py-24 md:px-10 md:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center gap-6">
           <h2 className="font-display text-4xl font-medium tracking-tight text-ink md:text-5xl">
@@ -95,46 +79,29 @@ export default function StoriesCarousel() {
           className="snap-row mt-10 flex cursor-grab gap-5 overflow-x-auto pb-4 md:mt-14"
         >
           {stories.map((story) => (
-            <StoryCard key={story.title} {...story} />
+            <StoryCard key={story.id} ref={setCardRef(story.id)} story={story} onOpen={openStory} />
           ))}
         </div>
       </div>
+
+      <Modal
+        open={!!activeStory}
+        onClose={closeStory}
+        getOriginElement={getOriginElement}
+        contentKey={activeId}
+        labelledBy={STORY_MODAL_TITLE_ID}
+        closeLabel="Close story"
+      >
+        {activeStory && (
+          <StoryModalContent
+            key={activeStory.id}
+            story={activeStory}
+            otherStories={stories.filter((s) => s.id !== activeStory.id)}
+            onSelectStory={selectStory}
+            animateOnMount={swapped}
+          />
+        )}
+      </Modal>
     </section>
-  )
-}
-
-function StoryCard({ image, title }) {
-  const [revealed, setRevealed] = useState(false)
-
-  return (
-    <button
-      type="button"
-      onClick={() => setRevealed((r) => !r)}
-      className="story-card group relative aspect-[3/4] w-[74vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-ink text-left sm:w-[45vw] md:w-[300px]"
-      aria-expanded={revealed}
-    >
-      <img
-        src={image}
-        alt={title}
-        loading="lazy"
-        width="600"
-        height="800"
-        className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent" />
-
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <h3 className="font-display text-xl font-medium leading-snug text-paper">
-          {title}
-        </h3>
-        <span
-          className={`mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-marigold/60 px-4 text-sm font-semibold text-marigold transition-opacity duration-200 ${
-            revealed ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-          }`}
-        >
-          Read Story
-        </span>
-      </div>
-    </button>
   )
 }

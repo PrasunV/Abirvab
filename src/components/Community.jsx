@@ -1,3 +1,5 @@
+import DonationCTA from './DonationCTA.jsx'
+
 export default function Community() {
   return (
     <section className="relative overflow-hidden px-6 py-24 md:px-10 md:py-32">
@@ -39,14 +41,7 @@ export default function Community() {
           </p>
         </div>
 
-        <a
-          href="https://forms.google.com/YOUR_CONTRIBUTE_FORM_ID"
-          target="_blank"
-          rel="noreferrer"
-          className="btn-fill-white shrink-0"
-        >
-          Contribute
-        </a>
+        <DonationCTA className="btn-fill-white shrink-0">Contribute</DonationCTA>
       </div>
     </section>
   )
