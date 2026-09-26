@@ -40,7 +40,18 @@ export default function Hero() {
       ref={scope}
       className="grid min-h-[92vh] bg-ink pt-16 text-paper md:grid-cols-2 md:pt-[4.5rem]"
     >
-      <div className="flex flex-col justify-center px-6 py-14 md:px-10 md:py-0">
+      {/*
+        Hero can't use the shared <Section> component (src/components/ui/Section.jsx):
+        its image panel must bleed all the way to the true right edge of the
+        screen, which rules out Section's centered "mx-auto max-w-6xl" box.
+        So instead of that box, this text column computes the identical
+        left inset by hand, from the same --gutter / --content-max CSS
+        variables (defined once in src/index.css) that <Section> is built
+        from — same numbers, one shared source, so this can't drift out of
+        alignment with the header, stories, community and footer sections
+        the way it did before.
+      */}
+      <div className="flex flex-col justify-center px-6 py-14 md:py-0 md:pl-[calc(var(--gutter)+max(0px,(100vw-var(--content-max)-2*var(--gutter))/2))] md:pr-10">
         <h1 className="font-display text-[13vw] font-medium leading-[0.98] tracking-tight md:text-[4.4vw]">
           <span className="block overflow-hidden">
             <span className="hero-line block">Every kid deserves</span>

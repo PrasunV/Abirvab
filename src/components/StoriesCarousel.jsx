@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { stories } from '../data/stories.js'
 import useDragScroll from '../hooks/useDragScroll.js'
+import Section from './ui/Section.jsx'
 import Modal from './ui/Modal.jsx'
 import StoryCard from './stories/StoryCard.jsx'
 import StoryModalContent, { STORY_MODAL_TITLE_ID } from './stories/StoryModalContent.jsx'
@@ -65,43 +66,47 @@ export default function StoriesCarousel() {
   const getOriginElement = useCallback(() => cardRefs.current.get(activeId) ?? null, [activeId])
 
   return (
-    <section ref={scope} id="stories" className="bg-paper px-6 py-24 md:px-10 md:py-32">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex items-center gap-6">
-          <h2 className="font-display text-4xl font-medium tracking-tight text-ink md:text-5xl">
-            Stories to Read
-          </h2>
-          <span className="hidden h-px flex-1 bg-ink/15 md:block" aria-hidden="true" />
-        </div>
-
-        <div
-          ref={rowRef}
-          className="snap-row mt-10 flex cursor-grab gap-5 overflow-x-auto pb-4 md:mt-14"
+    <Section
+      as="section"
+      ref={scope}
+      id="stories"
+      className="bg-paper py-24 md:py-32"
+      afterContent={
+        <Modal
+          open={!!activeStory}
+          onClose={closeStory}
+          getOriginElement={getOriginElement}
+          contentKey={activeId}
+          labelledBy={STORY_MODAL_TITLE_ID}
+          closeLabel="Close story"
         >
-          {stories.map((story) => (
-            <StoryCard key={story.id} ref={setCardRef(story.id)} story={story} onOpen={openStory} />
-          ))}
-        </div>
+          {activeStory && (
+            <StoryModalContent
+              key={activeStory.id}
+              story={activeStory}
+              otherStories={stories.filter((s) => s.id !== activeStory.id)}
+              onSelectStory={selectStory}
+              animateOnMount={swapped}
+            />
+          )}
+        </Modal>
+      }
+    >
+      <div className="flex items-center gap-6">
+        <h2 className="font-display text-4xl font-medium tracking-tight text-ink md:text-5xl">
+          Stories to Read
+        </h2>
+        <span className="hidden h-px flex-1 bg-ink/15 md:block" aria-hidden="true" />
       </div>
 
-      <Modal
-        open={!!activeStory}
-        onClose={closeStory}
-        getOriginElement={getOriginElement}
-        contentKey={activeId}
-        labelledBy={STORY_MODAL_TITLE_ID}
-        closeLabel="Close story"
+      <div
+        ref={rowRef}
+        className="snap-row mt-10 flex cursor-grab gap-5 overflow-x-auto pb-4 md:mt-14"
       >
-        {activeStory && (
-          <StoryModalContent
-            key={activeStory.id}
-            story={activeStory}
-            otherStories={stories.filter((s) => s.id !== activeStory.id)}
-            onSelectStory={selectStory}
-            animateOnMount={swapped}
-          />
-        )}
-      </Modal>
-    </section>
+        {stories.map((story) => (
+          <StoryCard key={story.id} ref={setCardRef(story.id)} story={story} onOpen={openStory} />
+        ))}
+      </div>
+    </Section>
   )
 }

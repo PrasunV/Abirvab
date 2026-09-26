@@ -3,6 +3,25 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /*
+     * Single source of truth for the site's horizontal rhythm.
+     * Section.jsx (src/components/ui/Section.jsx) uses the matching
+     * Tailwind classes (px-6/md:px-10, max-w-6xl) for every section
+     * except Hero, whose full-bleed image layout can't use Section's
+     * centered box -- it reads these variables directly instead.
+     * If you ever change the gutter or content width, update it in
+     * BOTH places: here, and Section.jsx's px-6/md:px-10 + max-w-6xl.
+     */
+    --gutter: 24px;
+    --content-max: 1152px; /* = Tailwind's max-w-6xl */
+  }
+  @media (min-width: 768px) {
+    :root {
+      --gutter: 40px; /* = Tailwind's px-10 */
+    }
+  }
+
   html {
     scroll-behavior: smooth;
   }
