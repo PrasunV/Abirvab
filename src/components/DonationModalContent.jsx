@@ -34,7 +34,7 @@ export default function DonationModalContent() {
         Scan to donate
       </h2>
       <p data-modal-reveal className="mx-auto mt-2 max-w-xs text-sm text-ink/60">
-        Use any UPI app to scan the code, or copy the ID below.
+        Use any UPI app to scan the code, or tap below to copy the ID.
       </p>
 
       <div data-modal-reveal className="mt-8 flex justify-center">
@@ -47,20 +47,25 @@ export default function DonationModalContent() {
         />
       </div>
 
-      <div
+      {/*
+        The whole pill is one button — tapping anywhere in it (not just the
+        "Copy" label) copies the UPI ID. The "Copy"/"Copied" pill inside is
+        a plain <span>, not a nested <button>, since a button can't contain
+        another button.
+      */}
+      <button
+        type="button"
+        onClick={handleCopy}
+        aria-label={`Copy UPI ID ${DONATION_INFO.upiId}`}
         data-modal-reveal
-        className="mx-auto mt-6 flex max-w-xs items-center justify-between gap-3 rounded-full border border-ink/10 bg-ink/[0.03] py-2 pl-5 pr-2"
+        className="mx-auto mt-6 flex max-w-xs items-center justify-between gap-3 rounded-full border border-ink/10 bg-ink/[0.03] py-2 pl-5 pr-2 text-left transition-colors hover:bg-ink/[0.06]"
       >
         <span className="truncate font-mono text-sm text-ink/80">{DONATION_INFO.upiId}</span>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-paper transition-colors hover:bg-ink/85"
-        >
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-paper">
           {copied && <CheckIcon className="h-3 w-3" />}
           {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
+        </span>
+      </button>
 
       <p data-modal-reveal className="mx-auto mt-8 max-w-xs text-sm text-ink/60">
         Thank you! Donated? WhatsApp us a screenshot at{' '}

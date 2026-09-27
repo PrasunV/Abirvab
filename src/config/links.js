@@ -8,13 +8,13 @@ export const FORM_LINKS = {
 }
 
 /**
- * Temporary donation flow (no payment gateway yet): the "Donate Now" /
- * "Contribute" buttons open a modal with a UPI QR code + copyable UPI ID,
- * since there's no way to confirm payment or issue a receipt until a real
- * gateway is wired up. Replace these placeholders with the real values.
+ * Donation flow (no payment gateway yet): the "Donate Now" / "Contribute" /
+ * "Sponsor a student" buttons open a modal with a UPI QR code + copyable
+ * UPI ID, since there's no way to confirm payment or issue a receipt until
+ * a real gateway is wired up.
  */
 export const DONATION_INFO = {
-  upiId: 'abirvab@upi', // placeholder — replace with the real UPI ID
+  upiId: 'mondalnikhilesh2002-1@oksbi',
   whatsappNumber: 'XXXXX-XXXXX', // placeholder — replace with the real WhatsApp number
-  qrImage: '/assets/images/upi-qr-placeholder.png', // placeholder — swap for the real UPI QR export
+  qrImage: '/assets/images/upi-qr.jpg',
 }
