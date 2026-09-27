@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import DonationCTA from './DonationCTA.jsx'
+import ImageWithFallback from './ui/ImageWithFallback.jsx'
 
 export default function Hero() {
   const scope = useRef(null)
@@ -73,17 +74,21 @@ export default function Hero() {
 
       <div
         ref={panelRef}
-        className="stripe-placeholder relative min-h-[48vh] w-full overflow-hidden md:min-h-full"
+        className="relative min-h-[48vh] w-full overflow-hidden md:min-h-full"
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <img
-            src="/assets/images/logo-mark.png"
-            alt=""
-            aria-hidden="true"
-            className="h-40 w-40 drop-shadow-lg md:h-56 md:w-56"
-          />
-        </div>
-        {/* Replace this panel's background with /assets/images/hero.jpg (kids/classroom, full-bleed) */}
+        {/*
+          TEMPORARY: reusing the p1 story photo here until a dedicated hero
+          image exists (see src/data/stories.js). object-cover center-crops
+          it to fill this panel, which is a tall, narrow slot on desktop
+          (half the viewport width, full viewport height) — a different,
+          purpose-shot hero photo would frame better here long-term.
+        */}
+        <ImageWithFallback
+          src="/assets/images/story-p1.jpg"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover"
+        />
       </div>
     </section>
   )
