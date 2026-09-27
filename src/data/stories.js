@@ -82,6 +82,23 @@ export const stories = [
     ],
     fullStoryUrl: null,
   },
+  {
+    id: 'when-puja-became-a-little-brighter',
+    title: 'When Puja Became a Little Brighter — Durga Puja 2024',
+    cardLabel: 'A Brighter Puja',
+    date: '8 October 2024',
+    location: 'Dhatrigram Railway Station Area',
+    image: '/assets/images/story-p4.jpg',
+    body: [
+      'Puja is a time of joy, celebration and togetherness. But for some children, the festive season can pass without the simple happiness of wearing new clothes.',
+      'On 8 October 2024, Abirvab Scholarship Foundation stepped forward to make Puja a little brighter for some needy students living in the area surrounding Dhatrigram Railway Station.',
+      'As part of the initiative, new clothes were handed over to the children so that they could celebrate the festival with happiness and dignity. Their smiles and excitement made the initiative truly special.',
+      'For Abirvab, this was more than just a distribution programme. It was a small effort to become a part of their Puja and to remind them that they are not alone.',
+      'A small gesture, a new dress, and a brighter Puja\u2014this is how Abirvab kept its promise.',
+      'The journey continues, with the hope of reaching more children and bringing more smiles in the days ahead.',
+    ],
+    fullStoryUrl: null,
+  },
 ]
 
 export const getStoryById = (id) => stories.find((s) => s.id === id) ?? null
