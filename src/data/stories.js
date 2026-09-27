@@ -66,6 +66,22 @@ export const stories = [
     ],
     fullStoryUrl: null,
   },
+  {
+    id: 'keeping-our-promises',
+    title: 'Keeping Our Promises — Distribution of Educational Tools',
+    cardLabel: 'Keeping Our Promises',
+    date: '16 February 2025',
+    location: 'Barasat M.S. Kendra, Kali Bele, Purba Bardhaman',
+    image: '/assets/images/story-p3.jpg',
+    body: [
+      'Abirvab Scholarship Foundation organised an Educational Tools Distribution Project at Barasat M.S. Kendra, where educational tools were distributed among 74 students from Classes V to VIII.',
+      'The initiative aimed to provide essential educational support and encourage students in their academic journey. The happiness of the students made the project truly meaningful for us.',
+      'This project was possible because of the continued support and helping hands of our donors and well-wishers. We sincerely thank everyone who has stood beside Abirvab.',
+      'With your continued support, Abirvab will keep moving forward towards bigger and more meaningful projects.',
+      'Abirvab was there, is there, and will continue to stand beside students.',
+    ],
+    fullStoryUrl: null,
+  },
 ]
 
 export const getStoryById = (id) => stories.find((s) => s.id === id) ?? null
