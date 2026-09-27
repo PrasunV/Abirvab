@@ -27,9 +27,11 @@ export default function MoreStories({ stories, onSelect }) {
                 className="h-20 w-16 shrink-0 rounded-xl object-cover"
               />
               <span className="min-w-0 flex-1">
-                <span className="block text-xs font-semibold uppercase tracking-wider text-ink/50">
-                  {story.tag}
-                </span>
+                {story.location && (
+                  <span className="block text-xs font-semibold uppercase tracking-wider text-ink/50">
+                    {story.location}
+                  </span>
+                )}
                 <span className="mt-1 block font-display text-lg leading-snug text-ink">
                   {story.title}
                 </span>

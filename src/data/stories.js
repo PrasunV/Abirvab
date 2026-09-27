@@ -1,88 +1,46 @@
 /**
  * Story content for the "Stories to Read" section and its modal.
  *
- * PLACEHOLDER COPY — every summary, highlight, stat and URL below is
- * sample text. Replace with real, verified details before launch.
+ * Real project write-ups, sent one at a time (p1, p2, p3, ...) and added
+ * here in that order.
  *
  * Shape
  *  id            unique slug (also used for the future full-story URL)
- *  title         card + modal headline
- *  tag           short category pill
- *  location      shown next to the tag
- *  image         /public path; missing files fall back to a striped placeholder
- *  summary       1–2 sentence intro under the headline
- *  highlights    3–4 short bullet points (right column)
- *  stat          { value, label } for the big impact tile
- *  fullStoryUrl  link for "Read full story"; set to null to hide the button
+ *  title         full headline, shown as the modal's <h2>
+ *  cardLabel     short, hand-written label (2-3 words) shown on the
+ *                carousel card instead of the full title — written
+ *                deliberately per story, not auto-truncated, so it never
+ *                reads as a cut-off fragment
+ *  date          display string, e.g. "25 August 2026"
+ *  location      display string, e.g. "Anukhal, Kalna, West Bengal"
+ *  image         /public path; source photo is landscape — the card
+ *                crops it to fit its portrait frame, the modal shows it
+ *                in full landscape
+ *  fullStoryUrl  link for "Read full story"; null hides the button
+ *                (currently unused — no full-story pages yet)
+ *
+ * TEMPORARILY REMOVED from this shape: tag, summary, highlights, stat.
+ * Real stories don't have this copy yet, so StoryModalContent renders
+ * without those sections for now (see the comment there).
  */
 export const stories = [
   {
-    id: 'aarav-path-to-school',
-    title: "Aarav's Path to School",
-    tag: 'Scholarship',
-    location: 'West Bengal',
-    image: '/assets/images/story-1.jpg',
-    summary:
-      'Aarav used to walk two hours each way to reach the nearest school. A scholarship covering his fees, uniform and a bicycle turned that walk into a short ride — and his attendance into a habit.',
-    highlights: [
-      'Full-year tuition and exam fees covered',
-      'Bicycle, uniform and school bag provided',
-      'Monthly check-ins with a volunteer mentor',
-      'Now in the top five of his class',
-    ],
-    stat: { value: '96%', label: 'attendance this academic year, up from under half' },
-    fullStoryUrl: '/stories/aarav-path-to-school',
+    id: 'anukhal-birthday-study-materials',
+    title: 'Making a Birthday Meaningful — A Study Material Distribution Initiative at Anukhal',
+    cardLabel: 'A Birthday Gift',
+    date: '25 August 2026',
+    location: 'Anukhal, Kalna, West Bengal',
+    image: '/assets/images/story-p1.jpg',
+    fullStoryUrl: null,
   },
   {
-    id: 'books-in-rural-classrooms',
-    title: 'Books in Rural Classrooms',
-    tag: 'Library drive',
-    location: 'Village schools',
-    image: '/assets/images/story-2.jpg',
-    summary:
-      'Many village classrooms had one textbook shared between five children. Our library drive stocked shelves with textbooks and storybooks in Bengali and English.',
-    highlights: [
-      'Textbooks for every child in participating classes',
-      'Storybook corners set up in each school',
-      'Weekly reading hour led by local volunteers',
-      'Books chosen with teachers, not for them',
-    ],
-    stat: { value: '1,200+', label: 'books delivered to rural classrooms' },
-    fullStoryUrl: '/stories/books-in-rural-classrooms',
-  },
-  {
-    id: 'bridging-the-tech-divide',
-    title: 'Bridging the Tech Divide',
-    tag: 'Digital learning',
-    location: 'Community centre',
-    image: '/assets/images/story-3.jpg',
-    summary:
-      'Most of our students had never used a computer. A small learning lab with refurbished laptops now gives them weekly, hands-on digital lessons.',
-    highlights: [
-      'Refurbished laptops donated by supporters',
-      'Weekly basic computing and typing classes',
-      'Safe internet use taught from day one',
-      'Older students help teach the younger ones',
-    ],
-    stat: { value: '80', label: 'students learning on a computer for the first time' },
-    fullStoryUrl: '/stories/bridging-the-tech-divide',
-  },
-  {
-    id: 'mentorship-that-matters',
-    title: 'Mentorship That Matters',
-    tag: 'Mentorship',
-    location: 'Across our programmes',
-    image: '/assets/images/story-4.jpg',
-    summary:
-      'A scholarship opens the door; a mentor helps a child walk through it. Volunteers meet students regularly to help with studies, goals and confidence.',
-    highlights: [
-      'One mentor paired with every scholarship student',
-      'Help with homework, exams and career choices',
-      'Parents kept in the loop every term',
-      'Former scholars now returning as mentors',
-    ],
-    stat: { value: '1:1', label: 'mentor for every scholarship student' },
-    fullStoryUrl: '/stories/mentorship-that-matters',
+    id: 'sharing-the-joy-of-puja',
+    title: 'Sharing the Joy of Puja — Puja Is for Everyone',
+    cardLabel: 'Sharing Puja Joy',
+    date: '29 September 2025',
+    location: 'Dhatrigram & Dule Para, near P.N.H.S.',
+    image: '/assets/images/story-p2.jpg',
+    fullStoryUrl: null,
   },
 ]
 
