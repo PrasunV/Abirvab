@@ -35,7 +35,7 @@ export default function StoryModalContent({ story, otherStories, onSelectStory, 
     return () => ctx.revert()
   }, [animateOnMount])
 
-  const { title, date, location, image } = story
+  const { title, date, location, image, body = [] } = story
 
   return (
     <div ref={scope} className="px-6 pb-10 pt-16 sm:px-10 md:px-16 md:pb-16 md:pt-20">
@@ -58,6 +58,14 @@ export default function StoryModalContent({ story, otherStories, onSelectStory, 
           className="aspect-[16/9] w-full object-cover md:aspect-[21/9]"
         />
       </div>
+
+      {body.length > 0 && (
+        <div data-modal-reveal className="mx-auto mt-10 max-w-prose space-y-5 text-base leading-relaxed text-ink/75 md:mt-14 md:text-lg">
+          {body.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </div>
+      )}
 
       <div data-modal-reveal className="mt-10 flex flex-col items-center gap-4 text-center md:mt-14">
         <p className="max-w-sm text-base text-ink/70">
