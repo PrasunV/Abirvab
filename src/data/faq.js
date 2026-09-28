@@ -1,4 +1,4 @@
-import { DONATION_INFO } from '../config/links.js'
+import { DONATION_INFO, CONTACT_EMAIL } from '../config/links.js'
 
 /**
  * FAQ content for the donation-trust section (src/components/FAQ.jsx).
@@ -34,6 +34,6 @@ export const faqs = [
   },
   {
     question: 'Have a question or concern about your donation?',
-    answer: `WhatsApp us at ${DONATION_INFO.whatsappNumber}. A real person from our team will reply, usually within a day.`,
+    answer: `WhatsApp us at ${DONATION_INFO.whatsappNumber}, or email ${CONTACT_EMAIL}. A real person from our team will reply, usually within a day.`,
   },
 ]

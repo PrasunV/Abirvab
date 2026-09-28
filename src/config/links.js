@@ -18,3 +18,6 @@ export const DONATION_INFO = {
   whatsappNumber: '+91 99329 49331', // placeholder — replace with the real WhatsApp number
   qrImage: '/assets/images/upi-qr.jpg',
 }
+
+/** Contact email for donor queries (shown in the FAQ section). */
+export const CONTACT_EMAIL = 'abirvabscholarshipofficial@gmail.com'
