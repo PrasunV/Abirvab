@@ -22,8 +22,8 @@ export const CheckIcon = ({ className = 'h-3 w-3' }) => (
   </svg>
 )
 
-export const ArrowRightIcon = ({ className = 'h-4 w-4' }) => (
-  <svg viewBox="0 0 24 24" className={className} {...base}>
+export const ArrowRightIcon = ({ className = 'h-4 w-4', strokeWidth = 2 }) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={strokeWidth}>
     <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 )

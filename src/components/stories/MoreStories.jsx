@@ -27,16 +27,14 @@ export default function MoreStories({ stories, onSelect }) {
                 className="h-20 w-16 shrink-0 rounded-xl object-cover"
               />
               <span className="min-w-0 flex-1">
-                {story.location && (
-                  <span className="block text-xs font-semibold uppercase tracking-wider text-ink/50">
-                    {story.location}
-                  </span>
-                )}
-                <span className="mt-1 block font-display text-lg leading-snug text-ink">
+                <span className="block truncate font-display text-lg leading-snug text-ink">
                   {story.title}
                 </span>
               </span>
-              <ArrowRightIcon className="h-4 w-4 shrink-0 text-ink/40 transition-transform group-hover:translate-x-1 group-hover:text-ink" />
+              <ArrowRightIcon
+                className="h-8 w-8 shrink-0 text-ink/40 transition-transform group-hover:translate-x-1 group-hover:text-ink"
+                strokeWidth={2.5}
+              />
             </button>
           </li>
         ))}
