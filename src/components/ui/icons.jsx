@@ -41,3 +41,10 @@ export const CalendarIcon = ({ className = 'h-4 w-4' }) => (
     <path d="M3.5 9.5h17M8 3v3M16 3v3" />
   </svg>
 )
+
+/** Points right by default; rotate 90deg (see FAQ.jsx) to point down when expanded. */
+export const ChevronIcon = ({ className = 'h-4 w-4' }) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}>
+    <path d="M9 5l7 7-7 7" />
+  </svg>
+)

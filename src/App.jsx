@@ -2,6 +2,7 @@ import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import StoriesCarousel from './components/StoriesCarousel.jsx'
 import Community from './components/Community.jsx'
+import FAQ from './components/FAQ.jsx'
 import Footer from './components/Footer.jsx'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Hero />
         <StoriesCarousel />
         <Community />
+        <FAQ />
       </main>
       <Footer />
     </>
