@@ -15,6 +15,6 @@ export const FORM_LINKS = {
  */
 export const DONATION_INFO = {
   upiId: 'mondalnikhilesh2002-1@oksbi',
-  whatsappNumber: 'XXXXX-XXXXX', // placeholder — replace with the real WhatsApp number
+  whatsappNumber: '+91 99329 49331', // placeholder — replace with the real WhatsApp number
   qrImage: '/assets/images/upi-qr.jpg',
 }

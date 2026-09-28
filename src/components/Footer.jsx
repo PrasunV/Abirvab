@@ -24,7 +24,9 @@ export default function Footer() {
           Abirvab Scholarship Foundation
         </p>
         <p className="mt-2 max-w-xs text-sm text-paper/50">
-          Registered nonprofit — Reg. / tax-exemption no. [placeholder].
+          Non-Governmental Organization. 
+          Estd.: 2020.
+          West Bengal, India
         </p>
         <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
           {social.map((item) => (
