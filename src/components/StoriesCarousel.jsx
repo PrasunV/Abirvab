@@ -3,8 +3,10 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { stories } from '../data/stories.js'
 import useDragScroll from '../hooks/useDragScroll.js'
+import useCarouselPagination from '../hooks/useCarouselPagination.js'
 import Section from './ui/Section.jsx'
 import Modal from './ui/Modal.jsx'
+import CarouselPagination from './ui/CarouselPagination.jsx'
 import StoryCard from './stories/StoryCard.jsx'
 import StoryModalContent, { STORY_MODAL_TITLE_ID } from './stories/StoryModalContent.jsx'
 
@@ -14,6 +16,7 @@ export default function StoriesCarousel() {
   const scope = useRef(null)
   const rowRef = useDragScroll()
   const cardRefs = useRef(new Map())
+  const pagination = useCarouselPagination(rowRef)
 
   const [activeId, setActiveId] = useState(null)
   const [swapped, setSwapped] = useState(false)
@@ -107,6 +110,18 @@ export default function StoriesCarousel() {
           <StoryCard key={story.id} ref={setCardRef(story.id)} story={story} onOpen={openStory} />
         ))}
       </div>
+
+      <CarouselPagination
+        className="mt-6"
+        count={pagination.pageCount}
+        activeIndex={pagination.activeIndex}
+        onSelect={pagination.scrollToPage}
+        onPrev={pagination.goPrev}
+        onNext={pagination.goNext}
+        atStart={pagination.atStart}
+        atEnd={pagination.atEnd}
+        label="Stories carousel"
+      />
     </Section>
   )
 }
