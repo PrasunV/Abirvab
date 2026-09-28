@@ -39,12 +39,17 @@ export default function FAQ() {
   }, [])
 
   return (
-    <Section ref={scope} className="bg-paper py-24 md:py-32">
-      <h2 className="font-display text-4xl font-medium tracking-tight text-ink md:text-5xl">
+    <Section
+      ref={scope}
+      className="bg-paper py-24 md:py-32"
+      innerClassName="mx-auto max-w-3xl"
+    >
+      {/* Left-aligned on mobile, centered from md up (matches the rest of the site's wide sections). */}
+      <h2 className="font-display text-4xl font-medium tracking-tight text-ink text-left md:text-center md:text-5xl">
         Frequently asked questions
       </h2>
 
-      <div className="mt-10 flex max-w-3xl flex-col gap-3 md:mt-14">
+      <div className="mt-10 flex flex-col gap-3 md:mt-14">
         {faqs.map((item, index) => (
           <FAQItem
             key={item.question}
