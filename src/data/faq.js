@@ -25,6 +25,11 @@ export const faqs = [
     answer: `Tap "Donate Now" for our UPI QR code, or pay directly to our UPI ID: ${DONATION_INFO.upiId}. Once you've paid, WhatsApp your payment screenshot to ${DONATION_INFO.whatsappNumber} and we'll confirm it personally.`,
   },
   {
+    question: 'Is there a minimum donation amount?',
+    answer:
+      "There's no minimum — every rupee helps. As a rough benchmark, it costs us about ₹500 on average to cover one child's books and study materials, so that's a fair amount to aim for if you'd like a starting point.",
+  },
+  {
     question: 'Will I get a receipt? Is my donation tax-deductible?',
     answer: `You'll get a personal confirmation once you share your payment screenshot with us on WhatsApp at ${DONATION_INFO.whatsappNumber}. Since we're not registered yet, donations aren't tax-exempt for now — we'd rather you know that before you give than after.`,
   },
