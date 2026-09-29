@@ -12,9 +12,18 @@ export default function MoreStories({ stories, onSelect }) {
       >
         More stories
       </h3>
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/*
+        grid-cols-1 (not just the sm:/lg: overrides) is required here: a bare
+        `grid` with no column count set for the base breakpoint lets grid
+        items size to their content's min-content width instead of the
+        container — with a non-wrapping title that silently overflows the
+        card, and the card overflows the sheet. `grid-cols-1` (and the
+        sm/lg variants) compile to `minmax(0, 1fr)` tracks, which is what
+        actually constrains each card to the available width.
+      */}
+      <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {stories.map((story) => (
-          <li key={story.id}>
+          <li key={story.id} className="min-w-0">
             <button
               type="button"
               onClick={() => onSelect(story.id)}
@@ -27,7 +36,7 @@ export default function MoreStories({ stories, onSelect }) {
                 className="h-20 w-16 shrink-0 rounded-xl object-cover"
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-display text-lg leading-snug text-ink">
+                <span className="line-clamp-2 font-display text-lg leading-snug text-ink">
                   {story.title}
                 </span>
               </span>
