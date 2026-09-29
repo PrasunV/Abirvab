@@ -4,6 +4,10 @@ export const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+/** True below the site's `md` breakpoint (768px) — matches the Tailwind config. */
+export const isMobileViewport = () =>
+  typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+
 /** True when any part of the rect is inside the viewport. */
 export const isRectInViewport = (rect) =>
   !!rect &&

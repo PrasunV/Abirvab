@@ -82,6 +82,7 @@ export default function StoriesCarousel() {
           contentKey={activeId}
           labelledBy={STORY_MODAL_TITLE_ID}
           closeLabel="Close story"
+          mobileBottomSheet
         >
           {activeStory && (
             <StoryModalContent

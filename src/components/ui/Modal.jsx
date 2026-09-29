@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import useBodyScrollLock from '../../hooks/useBodyScrollLock.js'
 import useFocusTrap from '../../hooks/useFocusTrap.js'
-import { getVisibleRect, isRectInViewport, prefersReducedMotion } from '../../lib/motion.js'
+import { getVisibleRect, isMobileViewport, isRectInViewport, prefersReducedMotion } from '../../lib/motion.js'
 import { CloseIcon } from './icons.jsx'
 
 const OPEN_DURATION = 0.6
@@ -27,6 +27,11 @@ const EASE = 'power3.inOut'
  *  - labelledBy        id of the heading inside children (aria-labelledby)
  *  - closeLabel        accessible label for the X button
  *  - panelClassName    extra classes for the white panel
+ *  - mobileBottomSheet below the md breakpoint, render as a near-full-height
+ *                      bottom sheet (drag handle, plain slide up/down, swipe
+ *                      to dismiss) instead of the centered zoom dialog. The
+ *                      centered zoom dialog is unchanged at md and up, and
+ *                      unchanged everywhere when this is left false (default).
  *
  * Elements inside children marked with `data-modal-reveal` fade up in sequence
  * once the zoom finishes.
@@ -39,6 +44,7 @@ export default function Modal({
   labelledBy,
   closeLabel = 'Close',
   panelClassName = '',
+  mobileBottomSheet = false,
   children,
 }) {
   if (!open) return null
@@ -50,6 +56,7 @@ export default function Modal({
       labelledBy={labelledBy}
       closeLabel={closeLabel}
       panelClassName={panelClassName}
+      mobileBottomSheet={mobileBottomSheet}
     >
       {children}
     </ModalInner>,
@@ -64,6 +71,7 @@ function ModalInner({
   labelledBy,
   closeLabel,
   panelClassName,
+  mobileBottomSheet,
   children,
 }) {
   const rootRef = useRef(null)
@@ -75,6 +83,7 @@ function ModalInner({
   const closingRef = useRef(false)
   const hiddenOriginRef = useRef(null)
   const openGhostRef = useRef(null)
+  const dragRef = useRef({ dragging: false, startY: 0, deltaY: 0 })
 
   // Latest callbacks without re-running effects.
   const onCloseRef = useRef(onClose)
@@ -84,6 +93,14 @@ function ModalInner({
 
   useBodyScrollLock(true)
   useFocusTrap(rootRef, true)
+
+  // True only while this modal is both configured for it and actually below
+  // the md breakpoint right now (checked fresh each time, since the viewport
+  // can change between mount, open, swap and close).
+  const inSheetMode = useCallback(
+    () => mobileBottomSheet && isMobileViewport(),
+    [mobileBottomSheet],
+  )
 
   /* ---------- origin element visibility (true shared-element feel) ---------- */
   const hideOrigin = useCallback((el) => {
@@ -119,7 +136,8 @@ function ModalInner({
     const origin = getOriginRef.current?.()
     const originRect = origin?.getBoundingClientRect()
     const reduce = prefersReducedMotion()
-    const canZoom = !reduce && isRectInViewport(originRect)
+    const sheetMode = inSheetMode()
+    const canZoom = !reduce && !sheetMode && isRectInViewport(originRect)
 
     let ghost = null
     // The panel is visibility:hidden until revealed, so focus can only move in afterwards.
@@ -160,6 +178,17 @@ function ModalInner({
           { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.05, ease: 'power2.out' },
           '-=0.05',
         )
+    } else if (sheetMode) {
+      // Plain slide up from off-screen bottom — no shared-element morph.
+      gsap.set(panel, { y: '100%' })
+      tl.fromTo(
+        panel,
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.01 },
+        0,
+      )
+        .to(panel, { y: '0%', duration: reduce ? 0.01 : 0.4, ease: 'power3.out' }, 0)
+        .add(focusClose)
     } else {
       tl.fromTo(
         panel,
@@ -173,7 +202,7 @@ function ModalInner({
       tl.kill()
       ghost?.remove()
     }
-  }, [hideOrigin])
+  }, [hideOrigin, inSheetMode])
 
   /* ---------- content swap (e.g. "More stories") ---------- */
   const firstKeyRef = useRef(contentKey)
@@ -197,7 +226,9 @@ function ModalInner({
     const backdrop = backdropRef.current
     const origin = getOriginRef.current?.()
     const originRect = origin?.getBoundingClientRect()
-    const canZoom = !prefersReducedMotion() && isRectInViewport(originRect)
+    const reduce = prefersReducedMotion()
+    const sheetMode = inSheetMode()
+    const canZoom = !reduce && !sheetMode && isRectInViewport(originRect)
     const finish = () => onCloseRef.current?.()
 
     const tl = gsap.timeline({ onComplete: finish })
@@ -227,12 +258,15 @@ function ModalInner({
         .to(ghost.firstChild, { autoAlpha: 1, duration: 0.3, ease: 'power1.in' }, 0.15)
         .to(backdrop, { autoAlpha: 0, duration: 0.4, ease: 'power2.inOut' }, 0.1)
         .add(showOrigin)
+    } else if (sheetMode) {
+      // Plain slide back down — continues smoothly from wherever a swipe left it.
+      tl.to(panel, { y: '100%', duration: reduce ? 0.01 : 0.3, ease: 'power2.in' }, 0)
+        .to(backdrop, { autoAlpha: 0, duration: reduce ? 0.01 : 0.25 }, 0)
     } else {
-      const reduce = prefersReducedMotion()
       tl.to(panel, { autoAlpha: 0, y: reduce ? 0 : 16, duration: reduce ? 0.01 : 0.25, ease: 'power2.in' }, 0)
         .to(backdrop, { autoAlpha: 0, duration: reduce ? 0.01 : 0.25 }, 0)
     }
-  }, [hideOrigin, showOrigin])
+  }, [hideOrigin, showOrigin, inSheetMode])
 
   /* ---------- Esc to close ---------- */
   useEffect(() => {
@@ -244,6 +278,35 @@ function ModalInner({
   // Click on the empty area around the panel closes (not clicks inside it).
   const onBackdropPointerDown = (e) => {
     if (e.target === e.currentTarget) requestClose()
+  }
+
+  /* ---------- swipe-down-to-dismiss (bottom sheet only) ---------- */
+  const onHandlePointerDown = (e) => {
+    if (!inSheetMode() || closingRef.current) return
+    dragRef.current = { dragging: true, startY: e.clientY, deltaY: 0 }
+    e.currentTarget.setPointerCapture?.(e.pointerId)
+  }
+
+  const onHandlePointerMove = (e) => {
+    const drag = dragRef.current
+    if (!drag.dragging) return
+    const deltaY = Math.max(0, e.clientY - drag.startY)
+    drag.deltaY = deltaY
+    gsap.set(panelRef.current, { y: deltaY })
+  }
+
+  const onHandlePointerEnd = () => {
+    const drag = dragRef.current
+    if (!drag.dragging) return
+    drag.dragging = false
+    const panel = panelRef.current
+    const threshold = panel.getBoundingClientRect().height * 0.22
+    if (drag.deltaY > threshold) {
+      requestClose()
+    } else {
+      gsap.to(panel, { y: '0%', duration: 0.3, ease: 'power2.out' })
+    }
+    drag.deltaY = 0
   }
 
   return (
@@ -259,7 +322,11 @@ function ModalInner({
         className="absolute inset-0 overflow-y-auto overscroll-contain"
       >
         <div
-          className="flex min-h-full items-start justify-center px-3 py-6 sm:px-6 md:py-16"
+          className={
+            mobileBottomSheet
+              ? 'flex min-h-full items-end justify-center md:items-start md:px-6 md:py-16'
+              : 'flex min-h-full items-start justify-center px-3 py-6 sm:px-6 md:py-16'
+          }
           onPointerDown={onBackdropPointerDown}
         >
           <div
@@ -267,8 +334,26 @@ function ModalInner({
             role="dialog"
             aria-modal="true"
             aria-labelledby={labelledBy}
-            className={`invisible relative w-full max-w-6xl rounded-3xl bg-white shadow-[0_30px_80px_-20px_rgba(14,14,16,0.45)] ${panelClassName}`}
+            className={`invisible relative w-full bg-white shadow-[0_30px_80px_-20px_rgba(14,14,16,0.45)] ${
+              mobileBottomSheet
+                ? 'min-h-[90vh] rounded-t-3xl md:min-h-0 md:max-w-6xl md:rounded-3xl'
+                : 'max-w-6xl rounded-3xl'
+            } ${panelClassName}`}
           >
+            {mobileBottomSheet && (
+              <div
+                className="flex touch-none justify-center pb-4 pt-5 md:hidden"
+                onPointerDown={onHandlePointerDown}
+                onPointerMove={onHandlePointerMove}
+                onPointerUp={onHandlePointerEnd}
+                onPointerCancel={onHandlePointerEnd}
+              >
+                <span
+                  aria-hidden="true"
+                  className="h-1 w-9 rounded-full bg-ink/20"
+                />
+              </div>
+            )}
             <button
               ref={closeBtnRef}
               type="button"
