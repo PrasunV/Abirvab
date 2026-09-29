@@ -58,10 +58,20 @@ export default function DonationModalContent() {
         onClick={handleCopy}
         aria-label={`Copy UPI ID ${DONATION_INFO.upiId}`}
         data-modal-reveal
-        className="mx-auto mt-6 flex max-w-xs items-center justify-between gap-3 rounded-full border border-ink/10 bg-ink/[0.03] py-2 pl-5 pr-2 text-left transition-colors hover:bg-ink/[0.06]"
+        className="mx-auto mt-6 flex w-full max-w-xs items-center justify-between gap-2 rounded-full border border-ink/10 bg-ink/[0.03] py-2 pl-4 pr-1.5 text-left transition-colors hover:bg-ink/[0.06]"
       >
-        <span className="truncate font-mono text-sm text-ink/80">{DONATION_INFO.upiId}</span>
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-semibold text-paper">
+        {/* min-w-0 lets this shrink below its text's natural width so
+            `truncate` can actually kick in — without it, a flex item
+            defaults to a min-width equal to its content's un-wrapped
+            width, which pushed the whole pill wider than the modal. */}
+        <span className="min-w-0 flex-1 truncate font-mono text-sm text-ink/80">
+          {DONATION_INFO.upiId}
+        </span>
+        <span
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-semibold transition-colors ${
+            copied ? 'bg-marigold text-ink' : 'bg-ink text-paper'
+          }`}
+        >
           {copied && <CheckIcon className="h-3 w-3" />}
           {copied ? 'Copied' : 'Copy'}
         </span>
