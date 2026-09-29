@@ -28,10 +28,16 @@ const EASE = 'power3.inOut'
  *  - closeLabel        accessible label for the X button
  *  - panelClassName    extra classes for the white panel
  *  - mobileBottomSheet below the md breakpoint, render as a near-full-height
- *                      bottom sheet (drag handle, plain slide up/down, swipe
- *                      to dismiss) instead of the centered zoom dialog. The
- *                      centered zoom dialog is unchanged at md and up, and
- *                      unchanged everywhere when this is left false (default).
+ *                      bottom sheet: the panel is pinned to the viewport
+ *                      bottom at a fixed height (not just a minimum), with a
+ *                      persistent peek of the page above it, a drag handle +
+ *                      close button that stay put, and only the body content
+ *                      below them scrolling (sealed off from the page, so a
+ *                      swipe down at the top of the content can't leak into
+ *                      the browser's own pull-to-refresh). Swipe-to-dismiss
+ *                      works from the handle. The centered zoom dialog is
+ *                      unchanged at md and up, and unchanged everywhere when
+ *                      this is left false (default).
  *
  * Elements inside children marked with `data-modal-reveal` fade up in sequence
  * once the zoom finishes.
@@ -77,6 +83,7 @@ function ModalInner({
   const rootRef = useRef(null)
   const backdropRef = useRef(null)
   const scrollerRef = useRef(null)
+  const sheetBodyRef = useRef(null)
   const panelRef = useRef(null)
   const closeBtnRef = useRef(null)
   const timelineRef = useRef(null)
@@ -209,11 +216,14 @@ function ModalInner({
   useEffect(() => {
     if (contentKey === firstKeyRef.current) return
     firstKeyRef.current = contentKey
-    scrollerRef.current?.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+    // Sheet mode scrolls its own inner body; the centered dialog scrolls
+    // via the outer page-level scroller.
+    const scrollTarget = inSheetMode() ? sheetBodyRef.current : scrollerRef.current
+    scrollTarget?.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
     // Track the newly-shown item's origin so close zooms back into the right card.
     const next = getOriginRef.current?.()
     if (next && hiddenOriginRef.current) hideOrigin(next)
-  }, [contentKey, hideOrigin])
+  }, [contentKey, hideOrigin, inSheetMode])
 
   /* ---------- close animation ---------- */
   const requestClose = useCallback(() => {
@@ -280,7 +290,7 @@ function ModalInner({
     if (e.target === e.currentTarget) requestClose()
   }
 
-  /* ---------- swipe-down-to-dismiss (bottom sheet only) ---------- */
+  /* ---------- swipe-down-to-dismiss (bottom sheet handle only) ---------- */
   const onHandlePointerDown = (e) => {
     if (!inSheetMode() || closingRef.current) return
     dragRef.current = { dragging: true, startY: e.clientY, deltaY: 0 }
@@ -290,6 +300,7 @@ function ModalInner({
   const onHandlePointerMove = (e) => {
     const drag = dragRef.current
     if (!drag.dragging) return
+    e.preventDefault()
     const deltaY = Math.max(0, e.clientY - drag.startY)
     drag.deltaY = deltaY
     gsap.set(panelRef.current, { y: deltaY })
@@ -336,13 +347,17 @@ function ModalInner({
             aria-labelledby={labelledBy}
             className={`invisible relative w-full bg-white shadow-[0_30px_80px_-20px_rgba(14,14,16,0.45)] ${
               mobileBottomSheet
-                ? 'min-h-[90vh] rounded-t-3xl md:min-h-0 md:max-w-6xl md:rounded-3xl'
+                ? // Pinned to the viewport bottom at a FIXED height (not a
+                  // minimum) so the peek above it can never be scrolled
+                  // away. `md:` resets it back to a normal in-flow, height:auto
+                  // block so the unrelated centered/zoom dialog is untouched.
+                  'fixed inset-x-0 bottom-0 z-10 flex h-[90vh] flex-col overflow-hidden rounded-t-3xl md:static md:inset-auto md:z-auto md:block md:h-auto md:max-w-6xl md:overflow-visible md:rounded-3xl'
                 : 'max-w-6xl rounded-3xl'
             } ${panelClassName}`}
           >
             {mobileBottomSheet && (
               <div
-                className="flex touch-none justify-center pb-4 pt-5 md:hidden"
+                className="flex shrink-0 touch-none justify-center pb-4 pt-5 md:hidden"
                 onPointerDown={onHandlePointerDown}
                 onPointerMove={onHandlePointerMove}
                 onPointerUp={onHandlePointerEnd}
@@ -363,7 +378,16 @@ function ModalInner({
             >
               <CloseIcon />
             </button>
-            {children}
+            {mobileBottomSheet ? (
+              <div
+                ref={sheetBodyRef}
+                className="min-h-0 flex-1 overflow-y-auto overscroll-contain md:min-h-0 md:flex-none md:overflow-visible"
+              >
+                {children}
+              </div>
+            ) : (
+              children
+            )}
           </div>
         </div>
       </div>
