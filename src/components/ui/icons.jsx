@@ -42,6 +42,13 @@ export const CalendarIcon = ({ className = 'h-4 w-4' }) => (
   </svg>
 )
 
+export const RefreshIcon = ({ className = 'h-4 w-4' }) => (
+  <svg viewBox="0 0 24 24" className={className} {...base}>
+    <path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3" />
+    <path d="M18 3v4.5h-4.5M6 21v-4.5h4.5" />
+  </svg>
+)
+
 /** Points right by default; rotate 90deg (see FAQ.jsx) to point down when expanded. */
 export const ChevronIcon = ({ className = 'h-4 w-4' }) => (
   <svg viewBox="0 0 24 24" className={className} {...base}>
