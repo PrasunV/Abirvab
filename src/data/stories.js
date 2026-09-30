@@ -35,7 +35,13 @@ export const stories = [
     cardLabel: 'A Birthday Gift',
     date: '25 August 2026',
     location: 'Anukhal, Kalna, West Bengal',
-    images: ['/assets/images/story-p1.jpg', '/assets/images/story-p1.jpg', '/assets/images/story-p1.jpg', '/assets/images/story-p1.jpg'],
+    images: [
+      '/assets/images/story-p1.jpg',
+      '/assets/images/story-p1-2.jpg',
+      '/assets/images/story-p1-3.jpg',
+      '/assets/images/story-p1-4.jpg',
+      '/assets/images/story-p1-5.jpg',
+    ],
     body: [
       'A birthday is often celebrated as a personal milestone, but it becomes truly meaningful when the occasion brings a smile to someone else\u2019s face. On 25 August 2026, Tabasmi (C/o: Hirak Ghosh) reached out to Abirvab Scholarship Foundation with a heartfelt intention to make her birthday more meaningful by extending support to students in need.',
       'As part of her birthday initiative, Tabasmi contributed an amount to Abirvab Scholarship Foundation. We proposed that her contribution be transformed into a meaningful educational initiative for students from economically disadvantaged backgrounds, in keeping with the Foundation\u2019s commitment to supporting meritorious students from the margins of society.',
