@@ -30,7 +30,7 @@ export default function MoreStories({ stories, onSelect }) {
               className="group flex w-full items-center gap-4 rounded-2xl bg-paper p-3 text-left transition-colors hover:bg-marigold/15"
             >
               <ImageWithFallback
-                src={story.image}
+                src={story.images[0]}
                 alt=""
                 loading="lazy"
                 className="h-20 w-16 shrink-0 rounded-xl object-cover"

@@ -6,7 +6,7 @@ import ImageWithFallback from '../ui/ImageWithFallback.jsx'
  * the card element itself is the origin the modal zooms out of.
  */
 const StoryCard = forwardRef(function StoryCard({ story, onOpen }, ref) {
-  const { title, cardLabel, image } = story
+  const { title, cardLabel, images } = story
 
   return (
     <button
@@ -17,7 +17,7 @@ const StoryCard = forwardRef(function StoryCard({ story, onOpen }, ref) {
       className="story-card group relative aspect-[3/4] w-[74vw] shrink-0 snap-start overflow-hidden rounded-2xl bg-ink text-left sm:w-[45vw] md:w-[300px]"
     >
       <ImageWithFallback
-        src={image}
+        src={images[0]}
         alt={title}
         loading="lazy"
         width="600"

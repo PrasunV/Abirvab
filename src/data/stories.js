@@ -13,9 +13,10 @@
  *                reads as a cut-off fragment
  *  date          display string, e.g. "25 August 2026"
  *  location      display string, e.g. "Anukhal, Kalna, West Bengal"
- *  image         /public path; source photo is landscape — the card
- *                crops it to fit its portrait frame, the modal shows it
- *                in full landscape
+ *  images        array of /public paths; source photos are landscape —
+ *                the card crops the first one to fit its portrait frame,
+ *                the modal shows all of them in a gallery grid (see
+ *                StoryImageGrid) with a full-screen lightbox on tap
  *  body          array of paragraph strings — the article text from the
  *                project doc, rendered as-is under the photo
  *  fullStoryUrl  link for "Read full story"; null hides the button
@@ -34,7 +35,7 @@ export const stories = [
     cardLabel: 'A Birthday Gift',
     date: '25 August 2026',
     location: 'Anukhal, Kalna, West Bengal',
-    image: '/assets/images/story-p1.jpg',
+    images: ['/assets/images/story-p1.jpg', '/assets/images/story-p1.jpg', '/assets/images/story-p1.jpg', '/assets/images/story-p1.jpg'],
     body: [
       'A birthday is often celebrated as a personal milestone, but it becomes truly meaningful when the occasion brings a smile to someone else\u2019s face. On 25 August 2026, Tabasmi (C/o: Hirak Ghosh) reached out to Abirvab Scholarship Foundation with a heartfelt intention to make her birthday more meaningful by extending support to students in need.',
       'As part of her birthday initiative, Tabasmi contributed an amount to Abirvab Scholarship Foundation. We proposed that her contribution be transformed into a meaningful educational initiative for students from economically disadvantaged backgrounds, in keeping with the Foundation\u2019s commitment to supporting meritorious students from the margins of society.',
@@ -54,7 +55,7 @@ export const stories = [
     cardLabel: 'Sharing Puja Joy',
     date: '29 September 2025',
     location: 'Dhatrigram & Dule Para, near P.N.H.S.',
-    image: '/assets/images/story-p2.jpg',
+    images: ['/assets/images/story-p2.jpg', '/assets/images/story-p2.jpg', '/assets/images/story-p2.jpg', '/assets/images/story-p2.jpg'],
     body: [
       'Festivals are not merely about celebration; they are also about sharing happiness, spreading smiles and making sure that the joy of the occasion reaches everyone, irrespective of their circumstances.',
       'With this spirit, Abirvab Scholarship Foundation came forward to share the festive joy with children from economically disadvantaged communities during the Puja season.',
@@ -72,7 +73,7 @@ export const stories = [
     cardLabel: 'Keeping Our Promises',
     date: '16 February 2025',
     location: 'Barasat M.S. Kendra, Kali Bele, Purba Bardhaman',
-    image: '/assets/images/story-p3.jpg',
+    images: ['/assets/images/story-p3.jpg', '/assets/images/story-p3.jpg', '/assets/images/story-p3.jpg', '/assets/images/story-p3.jpg'],
     body: [
       'Abirvab Scholarship Foundation organised an Educational Tools Distribution Project at Barasat M.S. Kendra, where educational tools were distributed among 74 students from Classes V to VIII.',
       'The initiative aimed to provide essential educational support and encourage students in their academic journey. The happiness of the students made the project truly meaningful for us.',
@@ -88,7 +89,7 @@ export const stories = [
     cardLabel: 'A Brighter Puja',
     date: '8 October 2024',
     location: 'Dhatrigram Railway Station Area',
-    image: '/assets/images/story-p4.jpg',
+    images: ['/assets/images/story-p4.jpg', '/assets/images/story-p4.jpg', '/assets/images/story-p4.jpg', '/assets/images/story-p4.jpg'],
     body: [
       'Puja is a time of joy, celebration and togetherness. But for some children, the festive season can pass without the simple happiness of wearing new clothes.',
       'On 8 October 2024, Abirvab Scholarship Foundation stepped forward to make Puja a little brighter for some needy students living in the area surrounding Dhatrigram Railway Station.',

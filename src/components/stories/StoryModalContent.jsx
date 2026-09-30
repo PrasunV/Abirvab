@@ -1,9 +1,10 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { prefersReducedMotion } from '../../lib/motion.js'
-import ImageWithFallback from '../ui/ImageWithFallback.jsx'
 import DonationCTA from '../DonationCTA.jsx'
 import StoryMetaChips from './StoryMetaChips.jsx'
+import StoryImageGrid from './StoryImageGrid.jsx'
+import ImageLightbox from './ImageLightbox.jsx'
 import MoreStories from './MoreStories.jsx'
 
 export const STORY_MODAL_TITLE_ID = 'story-modal-title'
@@ -14,14 +15,15 @@ export const STORY_MODAL_TITLE_ID = 'story-modal-title'
  * so the new content fades in (first open is animated by <Modal>).
  *
  * TEMPORARILY SIMPLIFIED: real stories currently only supply
- * title/date/location/image (no summary, highlights or impact stat
- * yet), so this renders headline, date/location chips, photo and a
+ * title/date/location/images (no summary, highlights or impact stat
+ * yet), so this renders headline, date/location chips, photo grid and a
  * "Sponsor a student" CTA. Once a story has real summary / highlights /
  * stat copy, those sections (StoryHighlights, ImpactStatCard — still in
  * src/components/stories/) can come back in.
  */
 export default function StoryModalContent({ story, otherStories, onSelectStory, animateOnMount = false }) {
   const scope = useRef(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   useLayoutEffect(() => {
     if (!animateOnMount || prefersReducedMotion()) return
@@ -35,7 +37,7 @@ export default function StoryModalContent({ story, otherStories, onSelectStory, 
     return () => ctx.revert()
   }, [animateOnMount])
 
-  const { title, date, location, image, body = [] } = story
+  const { title, date, location, images = [], body = [] } = story
 
   return (
     <div ref={scope} className="px-6 pb-10 pt-16 sm:px-10 md:px-16 md:pb-16 md:pt-20">
@@ -52,11 +54,7 @@ export default function StoryModalContent({ story, otherStories, onSelectStory, 
       </div>
 
       <div data-modal-reveal className="mt-10 overflow-hidden rounded-2xl bg-paper">
-        <ImageWithFallback
-          src={image}
-          alt={title}
-          className="aspect-[16/9] w-full object-cover md:aspect-[21/9]"
-        />
+        <StoryImageGrid images={images} title={title} onOpen={setLightboxIndex} />
       </div>
 
       {body.length > 0 && (
@@ -77,6 +75,15 @@ export default function StoryModalContent({ story, otherStories, onSelectStory, 
       <div className="mt-14 md:mt-20">
         <MoreStories stories={otherStories} onSelect={onSelectStory} />
       </div>
+
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={images}
+          initialIndex={lightboxIndex}
+          title={title}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </div>
   )
 }
