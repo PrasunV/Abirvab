@@ -61,7 +61,12 @@ export const stories = [
     cardLabel: 'Sharing Puja Joy',
     date: '29 September 2025',
     location: 'Dhatrigram & Dule Para, near P.N.H.S.',
-    images: ['/assets/images/story-p2.jpg', '/assets/images/story-p2.jpg', '/assets/images/story-p2.jpg', '/assets/images/story-p2.jpg'],
+    images: [
+      '/assets/images/story-p2.jpg',
+      '/assets/images/story-p2-2.jpg',
+      '/assets/images/story-p2-3.jpg',
+      '/assets/images/story-p2-4.jpg',
+    ],
     body: [
       'Festivals are not merely about celebration; they are also about sharing happiness, spreading smiles and making sure that the joy of the occasion reaches everyone, irrespective of their circumstances.',
       'With this spirit, Abirvab Scholarship Foundation came forward to share the festive joy with children from economically disadvantaged communities during the Puja season.',
@@ -79,7 +84,12 @@ export const stories = [
     cardLabel: 'Keeping Our Promises',
     date: '16 February 2025',
     location: 'Barasat M.S. Kendra, Kali Bele, Purba Bardhaman',
-    images: ['/assets/images/story-p3.jpg', '/assets/images/story-p3.jpg', '/assets/images/story-p3.jpg', '/assets/images/story-p3.jpg'],
+    images: [
+      '/assets/images/story-p3.jpg',
+      '/assets/images/story-p3-2.jpg',
+      '/assets/images/story-p3-3.jpg',
+      '/assets/images/story-p3-4.jpg',
+    ],
     body: [
       'Abirvab Scholarship Foundation organised an Educational Tools Distribution Project at Barasat M.S. Kendra, where educational tools were distributed among 74 students from Classes V to VIII.',
       'The initiative aimed to provide essential educational support and encourage students in their academic journey. The happiness of the students made the project truly meaningful for us.',
@@ -95,7 +105,14 @@ export const stories = [
     cardLabel: 'A Brighter Puja',
     date: '8 October 2024',
     location: 'Dhatrigram Railway Station Area',
-    images: ['/assets/images/story-p4.jpg', '/assets/images/story-p4.jpg', '/assets/images/story-p4.jpg', '/assets/images/story-p4.jpg'],
+    images: [
+      '/assets/images/story-p4.jpg',
+      '/assets/images/story-p4-2.jpg',
+      '/assets/images/story-p4-3.jpg',
+      '/assets/images/story-p4-4.jpg',
+      '/assets/images/story-p4-5.jpg',
+      '/assets/images/story-p4-6.jpg',
+    ],
     body: [
       'Puja is a time of joy, celebration and togetherness. But for some children, the festive season can pass without the simple happiness of wearing new clothes.',
       'On 8 October 2024, Abirvab Scholarship Foundation stepped forward to make Puja a little brighter for some needy students living in the area surrounding Dhatrigram Railway Station.',
