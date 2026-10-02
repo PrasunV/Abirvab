@@ -5,8 +5,9 @@ import ImageWithFallback from '../ui/ImageWithFallback.jsx'
  *  - 1 image:  full-width single photo (the old single-photo look)
  *  - 2 images: large left + one full-height tile on the right
  *  - 3 images: large left + two tiles stacked on the right
- *  - 4+:       same as 3, with the bottom-right tile dimmed and a
- *              "+N" pill showing how many more photos aren't shown
+ *  - 4+:       same as 3, with the bottom-right tile covered by a dark
+ *              scrim and a "+N" count showing how many more photos
+ *              aren't shown
  *
  * Every tile is a button — clicking any of them (including the "+N"
  * one) opens the full-screen lightbox at that photo's index.
@@ -39,7 +40,8 @@ export default function StoryImageGrid({ images, title, onOpen }) {
   }
 
   // 2 photos: right column is one tile. 3+: right column is two stacked
-  // tiles, and with more than 3 the last one carries the "+N" overlay.
+  // tiles, and with more than 3 the last one is covered edge-to-edge by a
+  // dark scrim with the remaining count on top of it.
   const hiddenCount = images.length - 3
 
   return (
@@ -52,10 +54,8 @@ export default function StoryImageGrid({ images, title, onOpen }) {
           <Tile index={1} className="flex-1" />
           <Tile index={2} className="flex-1">
             {hiddenCount > 0 && (
-              <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <span className="rounded-full bg-ink/60 px-4 py-1.5 text-base font-semibold text-paper backdrop-blur-[1px]">
-                  +{hiddenCount}
-                </span>
+              <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink/70">
+                <span className="text-2xl font-semibold text-paper md:text-3xl">+{hiddenCount}</span>
               </span>
             )}
           </Tile>
