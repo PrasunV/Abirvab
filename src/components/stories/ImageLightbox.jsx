@@ -131,6 +131,7 @@ function LightboxInner({ images, initialIndex, title, onClose }) {
           <ImageWithFallback
             src={images[index]}
             alt={count > 1 ? `${title} — photo ${index + 1} of ${count}` : title}
+            sizes="92vw"
             className="max-h-[80vh] max-w-[92vw] w-auto h-auto rounded-lg object-contain"
           />
         </div>

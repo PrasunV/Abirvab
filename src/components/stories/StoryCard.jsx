@@ -19,6 +19,7 @@ const StoryCard = forwardRef(function StoryCard({ story, onOpen }, ref) {
       <ImageWithFallback
         src={images[0]}
         alt={title}
+        sizes="(min-width: 768px) 300px, (min-width: 640px) 45vw, 74vw"
         loading="lazy"
         width="600"
         height="800"

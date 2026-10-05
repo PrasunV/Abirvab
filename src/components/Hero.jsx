@@ -87,6 +87,8 @@ export default function Hero() {
           src="/assets/images/story-p1.jpg"
           alt=""
           aria-hidden="true"
+          priority
+          sizes="(min-width: 768px) 50vw, 100vw"
           className="h-full w-full object-cover"
         />
       </div>

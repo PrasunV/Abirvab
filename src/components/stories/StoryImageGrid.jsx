@@ -12,10 +12,13 @@ import ImageWithFallback from '../ui/ImageWithFallback.jsx'
  * Every tile is a button — clicking any of them (including the "+N"
  * one) opens the full-screen lightbox at that photo's index.
  */
+// Right-hand tiles take the remaining 42% of the grid (modal max ~1024px).
+const RIGHT_SIZES = '(min-width: 1152px) 430px, 42vw'
+
 export default function StoryImageGrid({ images, title, onOpen }) {
   if (!images.length) return null
 
-  const Tile = ({ index, className = '', children }) => (
+  const Tile = ({ index, sizes, className = '', children }) => (
     <button
       type="button"
       onClick={() => onOpen(index)}
@@ -25,6 +28,7 @@ export default function StoryImageGrid({ images, title, onOpen }) {
       <ImageWithFallback
         src={images[index]}
         alt={images.length > 1 ? `${title} — photo ${index + 1}` : title}
+        sizes={sizes}
         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
       />
       {children}
@@ -34,7 +38,7 @@ export default function StoryImageGrid({ images, title, onOpen }) {
   if (images.length === 1) {
     return (
       <div className="aspect-[16/9] w-full md:aspect-[21/9]">
-        <Tile index={0} className="h-full w-full" />
+        <Tile index={0} sizes="(min-width: 1152px) 1024px, 100vw" className="h-full w-full" />
       </div>
     )
   }
@@ -46,13 +50,13 @@ export default function StoryImageGrid({ images, title, onOpen }) {
 
   return (
     <div className="flex aspect-[16/9] w-full gap-1 md:aspect-[21/9]">
-      <Tile index={0} className="w-[58%] shrink-0" />
+      <Tile index={0} sizes="(min-width: 1152px) 594px, 58vw" className="w-[58%] shrink-0" />
       {images.length === 2 ? (
-        <Tile index={1} className="flex-1" />
+        <Tile index={1} sizes={RIGHT_SIZES} className="flex-1" />
       ) : (
         <div className="flex flex-1 flex-col gap-1">
-          <Tile index={1} className="flex-1" />
-          <Tile index={2} className="flex-1">
+          <Tile index={1} sizes={RIGHT_SIZES} className="flex-1" />
+          <Tile index={2} sizes={RIGHT_SIZES} className="flex-1">
             {hiddenCount > 0 && (
               <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink/70">
                 <span className="text-2xl font-semibold text-paper md:text-3xl">+{hiddenCount}</span>
