@@ -34,11 +34,18 @@ const OUT_DIR = path.join(SRC_DIR, 'generated')
 const MANIFEST_PATH = path.join(ROOT, 'src/generated/imageManifest.json')
 const PUBLIC_PREFIX = '/assets/images'
 
-const TARGET_WIDTHS = [480, 960, 1600]
-const WEBP_QUALITY = 74
-const JPEG_QUALITY = 76
+// Quality is deliberately high: these are the photos people judge the NGO by.
+// Slow connections get the smaller widths (and a blurred preview) instead of
+// lower quality at every size.
+const TARGET_WIDTHS = [480, 800, 1200, 1600]
+const WEBP_QUALITY = 85
+const JPEG_QUALITY = 85
+// Tiny blurred stand-in inlined into the manifest (~300 bytes each) so every
+// photo has something to show the instant it renders, before any network.
+const LQIP_WIDTH = 32
+const LQIP_QUALITY = 40
 // Bump when the settings above change so every variant is re-encoded.
-const PIPELINE_VERSION = '1'
+const PIPELINE_VERSION = '2'
 
 // Never resized or re-encoded:
 //  - upi-qr.jpg: lossy re-encoding / resizing can break QR scanning.
@@ -75,8 +82,10 @@ async function processImage(sharp, file, keep) {
 
   const meta = await sharp(buf).metadata()
   // EXIF orientations 5-8 are rotated 90deg: stored width is the display height.
-  const srcWidth = (meta.orientation ?? 1) >= 5 ? meta.height : meta.width
-  if (!srcWidth) throw new Error('could not read image dimensions')
+  const rotated = (meta.orientation ?? 1) >= 5
+  const srcWidth = rotated ? meta.height : meta.width
+  const srcHeight = rotated ? meta.width : meta.height
+  if (!srcWidth || !srcHeight) throw new Error('could not read image dimensions')
 
   const base = file.replace(/\.[^.]+$/, '')
   const variants = []
@@ -101,7 +110,15 @@ async function processImage(sharp, file, keep) {
     })
   }
 
-  return { width: srcWidth, variants }
+  const lqipBuf = await sharp(buf)
+    .rotate()
+    .resize({ width: LQIP_WIDTH })
+    .blur(1)
+    .webp({ quality: LQIP_QUALITY })
+    .toBuffer()
+  const lqip = `data:image/webp;base64,${lqipBuf.toString('base64')}`
+
+  return { width: srcWidth, height: srcHeight, lqip, variants }
 }
 
 export async function generateImageVariants() {

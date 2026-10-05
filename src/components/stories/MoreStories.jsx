@@ -32,7 +32,7 @@ export default function MoreStories({ stories, onSelect }) {
               <ImageWithFallback
                 src={story.images[0]}
                 alt=""
-                sizes="64px"
+                sizes="110px"
                 loading="lazy"
                 className="h-20 w-16 shrink-0 rounded-xl object-cover"
               />

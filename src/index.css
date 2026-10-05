@@ -103,3 +103,14 @@
 .snap-row::-webkit-scrollbar {
   display: none;
 }
+
+/* Photo reveal: when a photo that had to be waited for finishes loading, it
+   sharpens out of its blurred preview instead of snapping in. Filter only —
+   callers animate transform on hover, so we must not touch it here. */
+@keyframes img-reveal {
+  from { filter: blur(10px); }
+  to   { filter: blur(0); }
+}
+.img-reveal {
+  animation: img-reveal 450ms ease-out;
+}

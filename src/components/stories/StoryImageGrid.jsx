@@ -50,7 +50,7 @@ export default function StoryImageGrid({ images, title, onOpen }) {
 
   return (
     <div className="flex aspect-[16/9] w-full gap-1 md:aspect-[21/9]">
-      <Tile index={0} sizes="(min-width: 1152px) 594px, 58vw" className="w-[58%] shrink-0" />
+      <Tile index={0} sizes="(min-width: 1152px) 770px, 75vw" className="w-[58%] shrink-0" />
       {images.length === 2 ? (
         <Tile index={1} sizes={RIGHT_SIZES} className="flex-1" />
       ) : (
