@@ -15,6 +15,9 @@ export default {
       fontFamily: {
         display: ['"Fraunces"', 'serif'],
         sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        // Hero rotating verbs only. Self-hosted, subset to a-z + "." (see
+        // public/assets/fonts) — add glyphs there if you use other characters.
+        script: ['"Seaweed Script"', '"Segoe Script"', 'cursive'],
       },
       maxWidth: {
         prose: '68ch',

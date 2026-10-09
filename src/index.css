@@ -114,3 +114,13 @@
 .img-reveal {
   animation: img-reveal 450ms ease-out;
 }
+
+/* Seaweed Script, subset to lowercase a-z + "." (~9KB): used only for the
+   hero's rotating verbs. `swap` so text shows immediately in the fallback. */
+@font-face {
+  font-family: 'Seaweed Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/seaweed-script-subset.woff2') format('woff2');
+}
