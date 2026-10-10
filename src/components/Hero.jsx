@@ -96,9 +96,9 @@ export default function Hero() {
 
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
       tl.from('.hero-line', {
-        // 130% (not 110%): the verb line's clip box is padded below for
-        // script descenders, so it needs to travel further to start hidden.
-        y: '130%',
+        // 140% (not 110%): the verb line's clip box is padded above/below for
+        // script ascenders/descenders, so it must travel further to start hidden.
+        y: '140%',
         duration: 0.9,
         stagger: 0.08,
       })
@@ -132,20 +132,26 @@ export default function Hero() {
       */}
       <div className="flex flex-col justify-center px-6 py-14 md:py-0 md:pl-[calc(var(--gutter)+max(0px,(100vw-var(--content-max)-2*var(--gutter))/2))] md:pr-10">
         <h1 className="font-display text-[13vw] font-medium leading-[0.98] tracking-tight md:text-[4.4vw]">
-          <span className="block overflow-hidden">
+          <span className="-mb-[0.15em] block overflow-hidden pb-[0.15em]">
             <span className="hero-line block">Every kid deserves</span>
           </span>
-          {/* pb/-mb: room for script descenders (y, f) without moving layout. */}
-          <span className="-mb-[0.22em] block overflow-hidden pb-[0.22em]">
+          {/* Padding + equal negative margin: room for the script's tall
+              ascenders and long descenders (y, f) without moving layout. */}
+          <span className="-mb-[0.3em] -mt-[0.2em] block overflow-hidden pb-[0.3em] pt-[0.2em]">
             <span className="hero-line block text-marigold">
               <span className="sr-only">to study, flourish and smile.</span>
               <span aria-hidden="true">
                 to{' '}
-                <span ref={verbsRef} className="inline-grid align-baseline">
+                <span
+                  ref={verbsRef}
+                  className="-mx-[0.15em] -my-[0.3em] inline-grid align-baseline font-script text-[1.2em] font-normal leading-none"
+                >
                   {VERBS.map((verb, i) => (
                     <span
                       key={verb}
-                      className="hero-verb font-script text-[1.2em] font-normal leading-none"
+                      // Padding enlarges the clip-path box so swashes that overhang the
+                      // glyph advance (left of "s", tail of "y") aren't cut by the wipe.
+                      className="hero-verb px-[0.15em] py-[0.3em]"
                       style={{ gridArea: '1 / 1', clipPath: i === 0 ? SHOWN : HIDDEN }}
                     >
                       {verb}.
