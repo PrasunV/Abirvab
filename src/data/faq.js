@@ -2,23 +2,18 @@ import { DONATION_INFO, CONTACT_EMAIL } from '../config/links.js'
 
 /**
  * FAQ content for the donation-trust section (src/components/FAQ.jsx).
- * Ordered by when a donor's doubt actually shows up: before paying ("is
- * this real?"), while paying ("where does my money go, how do I pay?"),
- * and after paying ("did I do the right thing, who do I ask?"). Answers
- * are deliberately short — this is scanned, not read end to end — and
- * stay honest about being an unregistered, student-run foundation rather
- * than glossing over it.
+ * Ordered by when a donor's doubt actually shows up: while paying ("where
+ * does my money go, how do I pay?") and after paying ("did I do the right
+ * thing, who do I ask?"). Answers are deliberately short — this is
+ * scanned, not read end to end — and stay honest about being an
+ * unregistered, student-run foundation (see the receipt/tax answer)
+ * rather than glossing over it. FAQ.jsx opens the first item by default.
  */
 export const faqs = [
   {
-    question: 'Is Abirvab a registered NGO?',
-    answer:
-      "Not yet, and we'd rather say that upfront. Abirvab was started in 2020 by a group of students on humanitarian grounds, and we've supported 200+ children since. We're working toward formal registration — until then, we keep everything as transparent as possible.",
-  },
-  {
     question: 'Where does my donation go?',
     answer:
-      "Straight to a child's education. We pay school fees directly to the school, and we buy books and uniforms ourselves — no money passes through anyone else's hands.",
+      "Straight to a child's education. We pay school fees directly to the school, and we buy books and uniforms ourselves — no money passes through anyone else's hands. It's how our student-run team has supported 200+ children since 2020.",
   },
   {
     question: 'How can I donate?',
