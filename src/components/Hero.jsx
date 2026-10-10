@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import DonationCTA from './DonationCTA.jsx'
-import ImageWithFallback from './ui/ImageWithFallback.jsx'
+import HeroSlider from './HeroSlider.jsx'
 
 // Words that rotate after "to ". Lowercase a-z only: the script font is
 // subset to those glyphs (public/assets/fonts). The first word is what shows
@@ -177,21 +177,7 @@ export default function Hero() {
         ref={panelRef}
         className="relative min-h-[48vh] w-full overflow-hidden md:min-h-full"
       >
-        {/*
-          TEMPORARY: reusing the p1 story photo here until a dedicated hero
-          image exists (see src/data/stories.js). object-cover center-crops
-          it to fill this panel, which is a tall, narrow slot on desktop
-          (half the viewport width, full viewport height) — a different,
-          purpose-shot hero photo would frame better here long-term.
-        */}
-        <ImageWithFallback
-          src="/assets/images/story-p1.jpg"
-          alt=""
-          aria-hidden="true"
-          priority
-          sizes="(min-width: 768px) 135vh, 140vw"
-          className="h-full w-full object-cover"
-        />
+        <HeroSlider />
       </div>
     </section>
   )

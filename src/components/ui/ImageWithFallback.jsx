@@ -45,6 +45,10 @@ const lqipStyle = (lqip) => ({
  *
  * `priority` marks the main above-the-fold image (fetched first). Lowercase
  * `fetchpriority` on purpose — React 18 doesn't know the camelCase prop.
+ *
+ * `onLoaded` / `onFailed` report the outcome to a parent that needs to know
+ * (e.g. the hero slider only advances to a photo that has actually arrived).
+ * `style` is merged with the blurred-preview background, not replacing it.
  */
 export default function ImageWithFallback({
   src,
@@ -52,6 +56,9 @@ export default function ImageWithFallback({
   className = '',
   sizes = '100vw',
   priority = false,
+  style,
+  onLoaded,
+  onFailed,
   ...rest
 }) {
   const [status, setStatus] = useState(src ? 'loading' : 'error')
@@ -59,6 +66,8 @@ export default function ImageWithFallback({
   const [maxWidth] = useState(maxImageWidthForConnection)
   const [revealed, setRevealed] = useState(false)
   const startedAt = useRef(0)
+  const callbacks = useRef({})
+  callbacks.current = { onLoaded, onFailed }
 
   const entry = src ? imageManifest[src] : undefined
 
@@ -70,6 +79,12 @@ export default function ImageWithFallback({
     }, LOAD_TIMEOUT_MS)
     return () => window.clearTimeout(timer)
   }, [status, attempt])
+
+  // Report the outcome (also after a retry).
+  useEffect(() => {
+    if (status === 'loaded') callbacks.current.onLoaded?.()
+    else if (status === 'error') callbacks.current.onFailed?.()
+  }, [status])
 
   const retry = (e) => {
     e.stopPropagation()
@@ -90,7 +105,7 @@ export default function ImageWithFallback({
       <div
         role="img"
         aria-label={alt}
-        style={entry?.lqip ? lqipStyle(entry.lqip) : undefined}
+        style={entry?.lqip ? { ...lqipStyle(entry.lqip), ...style } : style}
         className={`${entry?.lqip ? '' : 'stripe-placeholder '}relative overflow-hidden ${className}`}
       >
         {src && (
@@ -120,7 +135,7 @@ export default function ImageWithFallback({
       .join(' '),
     // While loading, the blurred preview is the element's own background:
     // it needs no extra wrapper, so every caller's layout stays untouched.
-    style: loading && entry?.lqip ? lqipStyle(entry.lqip) : undefined,
+    style: loading && entry?.lqip ? { ...lqipStyle(entry.lqip), ...style } : style,
     ...(priority ? { fetchpriority: 'high' } : {}),
     ...rest,
   }

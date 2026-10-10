@@ -22,3 +22,18 @@ export const maxImageWidthForConnection = () => {
   if (effectiveType === '3g') return 800
   return Infinity
 }
+
+/**
+ * True on devices/connections where decorative motion and eager prefetching
+ * should be dialled down: data-saver, 2G, or a low-end phone (<= 2 GB RAM or
+ * <= 2 CPU cores, where the browser reports them). Best-effort only — each
+ * signal is Chromium-only, so a `false` just means "no reason to hold back".
+ */
+export const isConstrainedDevice = () => {
+  if (typeof navigator === 'undefined') return false
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+  if (connection && (connection.saveData || ['slow-2g', '2g'].includes(connection.effectiveType))) return true
+  if (navigator.deviceMemory && navigator.deviceMemory <= 2) return true
+  if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) return true
+  return false
+}
